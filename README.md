@@ -16,6 +16,8 @@
 ## Functions:
 [ region_shape, region_robot ] = arena_seg( im_original, config )
 
+Will segement original image and look for shapes and robot. Config array can be parametrized if needed
+
 * config
 
 | Fields                  | Value         | Description                                                           |

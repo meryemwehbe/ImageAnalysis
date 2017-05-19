@@ -6,8 +6,9 @@ addpath('image_set')
 addpath('shapes')
 addpath('MinBoundSuite')
 
- 
+% Will segement original image and look for shapes and robot. Config array can be parametrized if needed
 % * config
+%
 % | Fields                  | Value         | Description                                                           |
 % |:----------------------- |:------------- |:--------------------------------------------------------------------- |
 % | n_homes                 | scalar        | Number of homes to look for                                           |
@@ -27,6 +28,7 @@ addpath('MinBoundSuite')
 % 
 % 
 % * region_shape
+%
 % | Fields       | Value         | Description                                                  |
 % |:------------ |:------------- |:------------------------------------------------------------ |
 % | Centroid     | [x,y]         | Centroid of the shape                                        |
@@ -35,7 +37,9 @@ addpath('MinBoundSuite')
 % | Color        | String        | String value of the detected color                           |
 % | Shape        | String        | String value of the detected shape                           |
 % 
+%
 % * region_robot
+%
 % | Fields      | Value      | Description                         |
 % |:----------- |:---------- |:----------------------------------- |
 % | Centroid    | [x,y]      | Centroid of the arrow head          |
