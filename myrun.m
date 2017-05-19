@@ -1,2 +1,7 @@
 load('region.mat');
-whatever = Ordering(region);
+[homes,ordered] = Ordering(region);
+
+LocationRobot.x = 470; 
+LocationRobot.y = 400; 
+
+yesno = CheckRobotHome(LocationRobot,homes);

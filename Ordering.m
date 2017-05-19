@@ -1,4 +1,4 @@
-function [ output_args ] = Ordering( region )
+function [homes, output_args ] = Ordering( region )
 % 1-Red, 2-Yellow,
 % 3-Green, 4-Brown, 5-Blue, 6-Pink and 7-Gray
 Ordered_shapes = [];
