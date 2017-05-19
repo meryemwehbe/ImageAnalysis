@@ -1,6 +1,7 @@
-function [ output_args ] = arena_seg( im_original, config  )
+function [ region_shape, region_robot ] = arena_seg( im_original, config  )
 %ARENA_SEG Summary of this function goes here
 %   Detailed explanation goes here
+
 
 region_robot = robot_fit(im_original, config);
 region_shape = shape_fit(im_original, config);

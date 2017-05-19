@@ -1,6 +1,7 @@
 function [ region_rob ] = robot_fit( im_original, config )
-%ROBOT_FIT Summary of this function goes here
-%   Detailed explanation goes here
+% ROBOT_FIT Extract robot positions.
+%   region_rob = ROBOT_FIT(Im, Config). Take the original image and extract the
+%   robot and its position. If not robot found, return empty array.
 
 % Main variables
 size_image = size(im_original, 1)*size(im_original, 2);
@@ -51,6 +52,7 @@ if sum(v < 0) > sum(v > 0)
     region_rob.Orientation = radtodeg(pi) + region_rob.Orientation;
 end
 
+region_rob = rmfield(region_rob, {'Image', 'Area'});
 
 end
 

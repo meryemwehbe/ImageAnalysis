@@ -1,6 +1,8 @@
 function [ region ] = shape_fit( im_original, config )
-%SHAPE_FIT Summary of this function goes here
-%   Detailed explanation goes here
+% SHAPE_FIT Extract shapes positions.
+%   region = SHAPE_FIT(Im, Config). Take the original image and extract the
+%   shapes and their position. If not shape not found or home badly 
+%   detected return empty array.
 
 % Main variables
 size_image = size(im_original, 1)*size(im_original, 2);
@@ -24,12 +26,6 @@ homes_sz = [];
 
 for i = length(region):-1:1
     
-%     if region(i).FilledArea > 500
-%         plot(region(i).Centroid(1), region(i).Centroid(2), 'or');
-%         hold on;
-%         d = 0
-%     end
-
     % Check if area and ratio in correct range
     if region(i).FilledArea/size_image < config.size_min_thresh ...
             || region(i).FilledArea/size_image > config.size_max_thresh
@@ -54,7 +50,8 @@ for i = length(region):-1:1
 end
 
 if length(region) < config.n_homes
-    return
+    region = []
+    return 
 end
 
 % 3. Set homes regions (based on top K sizes)
@@ -91,7 +88,7 @@ for i = 1:length(region)
     region(i).Shape = config.shape_str{id_shape};
 end
 
-region = rmfield(region, {'Perimeter', 'FilledArea', 'Image'});
+region = rmfield(region, {'Perimeter', 'FilledArea', 'Image', 'ShapeProb'});
 
 
 end
