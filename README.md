@@ -17,6 +17,7 @@
 [ region_shape, region_robot ] = arena_seg( im_original, config )
 
 * config
+
 | Fields                  | Value         | Description                                                           |
 |:----------------------- |:------------- |:--------------------------------------------------------------------- |
 | n_homes                 | scalar        | Number of homes to look for                                           |
@@ -36,6 +37,7 @@
 
 
 * region_shape
+
 | Fields       | Value         | Description                                                  |
 |:------------ |:------------- |:------------------------------------------------------------ |
 | Centroid     | [x,y]         | Centroid of the shape                                        |
@@ -45,6 +47,7 @@
 | Shape        | String        | String value of the detected shape                           |
 
 * region_robot
+
 | Fields      | Value      | Description                         |
 |:----------- |:---------- |:----------------------------------- |
 | Centroid    | [x,y]      | Centroid of the arrow head          |
