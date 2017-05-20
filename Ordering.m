@@ -18,9 +18,12 @@ while( (count ~= length(region) - length(homes)) && k <= length(color_to_detect)
       
       for i =1:length(region)
         if(strcmp(region(i).Color , color_to_detect{k}) && region(i).Home == 0)
-            Ordered_shapes = [Ordered_shapes;region(i).Centroid];
-            home = CalculateNearestHome(region(i).Centroid, homes);
-            Ordered_shapes = [Ordered_shapes; home.Centroid];
+            
+            home = CalculateHome(region(i).Shape, homes);
+            if(~strcmp(home,'none'))    
+                Ordered_shapes = [Ordered_shapes;region(i).Centroid];
+                Ordered_shapes = [Ordered_shapes; home.Centroid];
+            end           
             count = count + 1;
         end
       end
