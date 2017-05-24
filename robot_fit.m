@@ -9,12 +9,14 @@ size_image = size(im_original, 1)*size(im_original, 2);
 % 1. Go to HSV ref to threshold value (black)
 hsv_im = rgb2hsv(im_original);
 thresh = hsv_im(:,:,3) < config.black_v_thresh;
+% thresh = bwmorph(BW, 'spur', 50);
 
 % 2. Get matching regions and look for bigest (according also to limit
 % size)
-region_rob = regionprops(thresh, 'Perimeter', 'FilledArea', 'Image', 'Orientation', 'Centroid');
+region_rob = regionprops(thresh, 'Perimeter', 'FilledArea', 'Image', ...
+    'Eccentricity', 'Orientation', 'Centroid');
 
-areas = [];
+prob_all = [];
 
 for i = length(region_rob):-1:1
     % Check if area and ratio in correct range
@@ -24,22 +26,25 @@ for i = length(region_rob):-1:1
         continue
     end
     % Check compacity limit
-    if region_rob(i).Perimeter^2/region_rob(i).FilledArea > config.cmp_arrow_thresh_high...
-        || region_rob(i).Perimeter^2/region_rob(i).FilledArea < config.cmp_arrow_thresh_low
+    region_rob(i).Compacity = region_rob(i).Perimeter^2/region_rob(i).FilledArea ;
+    
+    prob = normpdf(region_rob(i).Compacity, config.cmp_arrow_thresh, 4) ...
+        * normpdf(region_rob(i).Eccentricity, config.ecc_arrow_thresh, 0.1);
+    if prob < 1e-3
         region_rob(i) = [];
         continue
     end
-    region_rob(i).Compacity = region_rob(i).Perimeter.^2/region_rob(i).FilledArea;
-    areas = [region_rob(i).FilledArea/size_image, areas];
+    prob_all = [prob, prob_all];
 end
 
-if isempty(areas)
+if isempty(prob_all)
     region_rob = [];
     return
 end
 
-[~, I] = max(areas);
+[V, I] = max(prob_all);
 region_rob = region_rob(I);
+region_rob(1).Prob = V;
 
 % 3. Look for angle of arrrow (according to x axis)
 % Project point on main axis to look for direction. Region of arrow head
