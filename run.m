@@ -52,7 +52,7 @@ config.n_homes = 2;                         % Number of homes
 config.shape_str = ...
     {'Circle', 'Square', 'Triangle'};
 config.size_min_thresh = 1e-3;              % Minimum size objects
-config.size_max_thresh = 5e-2;              % Maximum size objects
+config.size_max_thresh = 1e-1;              % Maximum size objects
 config.compacity_thresh = 30;               % Compacity threshold, bad shape
 config.cmp_arrow_thresh = 57;               % Wanted compacity
 config.ecc_arrow_thresh = 0.77;               % Wanted compacity
@@ -87,9 +87,9 @@ for i = 3:length(listing)
     display(sprintf('%i/%i, %s', i, length(listing), listing(i).name))
     back = im2double(imread(listing(i).name));
     [region_shape, region_robot ] = arena_seg(back, config); 
-    if ~isempty(region_robot)
-        region_robot(1).Prob
-    end
+%     if ~isempty(region_robot)
+%         region_robot(1).Prob
+%     end
 end
 
 
