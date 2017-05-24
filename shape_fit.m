@@ -93,6 +93,7 @@ for i = 1:length(region)
         [~, I] = min(f_dist(sub_color(1), config.color_hue_thresh));
         region(i).Color = config.color_str{I};
     end
+    region(i).ColorHSV = sub_color;
 end
 
 % 5. Detection of shape (based on compacity)
@@ -102,7 +103,8 @@ for i = 1:length(region)
 end
 
 if ~config.debug
-    region = rmfield(region, {'Perimeter', 'FilledArea', 'Image', 'ShapeProb'});
+    region = rmfield(region, {'Perimeter', 'FilledArea', 'Image', ...
+        'ShapeProb', 'Compacity'});
 end
 
 

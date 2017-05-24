@@ -12,20 +12,28 @@ thresh = hsv_im(:,:,3) < config.black_v_thresh;
 
 % 2. Get matching regions and look for bigest (according also to limit
 % size)
-region_rob = regionprops(thresh, 'Area', 'Image', 'Orientation', 'Centroid');
+region_rob = regionprops(thresh, 'Perimeter', 'FilledArea', 'Image', 'Orientation', 'Centroid');
 
 areas = [];
-for i = length(region_rob)-1:-1:1
-    if region_rob(i).Area/size_image < config.size_min_thresh ...
-        || region_rob(i).Area/size_image > config.size_max_thresh
+
+for i = length(region_rob):-1:1
+    % Check if area and ratio in correct range
+    if region_rob(i).FilledArea/size_image < config.size_min_thresh ...
+        || region_rob(i).FilledArea/size_image > config.size_max_thresh
         region_rob(i) = [];
         continue
     end
-    
-    areas = [region_rob(i).Area, areas];
+    % Check compacity limit
+    if region_rob(i).Perimeter^2/region_rob(i).FilledArea > config.cmp_arrow_thresh_high...
+        || region_rob(i).Perimeter^2/region_rob(i).FilledArea < config.cmp_arrow_thresh_low
+        region_rob(i) = [];
+        continue
+    end
+    region_rob(i).Compacity = region_rob(i).Perimeter.^2/region_rob(i).FilledArea;
+    areas = [region_rob(i).FilledArea/size_image, areas];
 end
 
-if length(areas) == 0
+if isempty(areas)
     region_rob = [];
     return
 end
@@ -52,7 +60,10 @@ if sum(v < 0) > sum(v > 0)
     region_rob.Orientation = radtodeg(pi) + region_rob.Orientation;
 end
 
-region_rob = rmfield(region_rob, {'Image', 'Area'});
+if ~config.debug
+    region_rob = rmfield(region_rob, {'Image', 'FilledArea', 'Perimeter'});
+end
+
 
 end
 

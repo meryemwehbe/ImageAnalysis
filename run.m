@@ -52,9 +52,11 @@ config.n_homes = 2;                         % Number of homes
 config.shape_str = ...
     {'Circle', 'Square', 'Triangle'};
 config.size_min_thresh = 1e-3;              % Minimum size objects
-config.size_max_thresh = 1e-1;              % Maximum size objects
-config.compacity_thresh = 50;               % Compacity threshold, bad shape
-config.prop_shape_thresh = 0.8;            % Minimal probaility of shape
+config.size_max_thresh = 5e-2;              % Maximum size objects
+config.compacity_thresh = 30;               % Compacity threshold, bad shape
+config.cmp_arrow_thresh_high = 70;         % Compacity threshold, bad shape
+config.cmp_arrow_thresh_low = 30;           % Compacity threshold, bad shape
+config.prop_shape_thresh = 0.8;             % Minimal probaility of shape
 % 0.2 - Robot detection
 config.black_v_thresh = 0.4;                % Value threshold
 % 0.3 - Shape color detections
@@ -66,12 +68,12 @@ config.color_hue_thresh = ...
 config.color_saturation_thresh = 0.25;
 % 0.4 -Display options
 config.diplay_res = 1;                      % Dispaly image with detected obj
-config.debug = 1;    
+config.debug = 1;                           % Do not remove attributes regions
 config.save_res = 1;                        % Save results
-config.save_filename = 'res/display.png';        % Save filename
+config.save_filename = 'res/display.png';   % Save filename
 
 %
-back = im2double(imread('lum_test11.png'));
+back = im2double(imread('straight_aft_50_1.5_3.png'));
 [ region_shape, region_robot ] = arena_seg(back, config);
 
 %% Test all
@@ -92,14 +94,14 @@ listing = dir('image_set/background');
 
 figure();
 for i = 3:length(listing)
-    
+    display(sprintf('%i/%i, %s', i, length(listing), listing(i).name))
     back = im2double(imread(listing(i).name));
     region = shape_fit(back, config);
     for j = 1:length(region)
        plot(region(j).ColorHSV(1), region(j).ColorHSV(2), 'o', ...
            'MarkerSize', 5 + 5*region(j).ColorHSV(3), ...
-           'MarkerEdgeColor', region(j).ColorRGB, ...
-           'MarkerFaceColor', region(j).ColorRGB); hold on;
+           'MarkerEdgeColor', hsv2rgb(region(j).ColorHSV), ...
+           'MarkerFaceColor', hsv2rgb(region(j).ColorHSV)); hold on;
     end
 end
 
