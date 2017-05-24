@@ -2,7 +2,8 @@ clear;
 clc;
 close all;
 
-addpath('image_set')
+addpath('image_set/background')
+addpath('image_set/motion')
 addpath('shapes')
 addpath('MinBoundSuite')
 
@@ -53,7 +54,7 @@ config.shape_str = ...
 config.size_min_thresh = 1e-3;              % Minimum size objects
 config.size_max_thresh = 1e-1;              % Maximum size objects
 config.compacity_thresh = 50;               % Compacity threshold, bad shape
-config.prop_shape_thresh = 0.75;            % Minimal probaility of shape
+config.prop_shape_thresh = 0.8;            % Minimal probaility of shape
 % 0.2 - Robot detection
 config.black_v_thresh = 0.4;                % Value threshold
 % 0.3 - Shape color detections
@@ -65,27 +66,29 @@ config.color_hue_thresh = ...
 config.color_saturation_thresh = 0.25;
 % 0.4 -Display options
 config.diplay_res = 1;                      % Dispaly image with detected obj
+config.debug = 1;    
 config.save_res = 1;                        % Save results
 config.save_filename = 'res/display.png';        % Save filename
 
 %
-back = im2double(imread('img1.png'));
+back = im2double(imread('lum_test11.png'));
 [ region_shape, region_robot ] = arena_seg(back, config);
 
 %% Test all
 
-listing = dir('image_set');
+listing = dir('image_set/background');
+config.diplay_res = 0;
 
 for i = 3:length(listing)
-    display(sprintf('%i/%i', i, length(listing)))
-    config.save_filename = sprintf('res/detection_%s.png', listing(i).name);        
+    config.save_filename = sprintf('res/detection_%s', listing(i).name); 
+    display(sprintf('%i/%i, %s', i, length(listing), listing(i).name))
     back = im2double(imread(listing(i).name));
     arena_seg(back, config);  
 end
 
 %% Color region
 
-listing = dir('image_set');
+listing = dir('image_set/background');
 
 figure();
 for i = 3:length(listing)

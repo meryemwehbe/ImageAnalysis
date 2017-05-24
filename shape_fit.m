@@ -9,20 +9,32 @@ size_image = size(im_original, 1)*size(im_original, 2);
 
 % 1. Split forground / background
 BW = edge(rgb2gray(im_original),'Canny');
-BW = bwmorph(BW, 'remove', inf);
-BW = bwmorph(BW, 'clean', inf);
-BW = bwmorph(BW, 'diag', inf);
-BW = bwmorph(BW, 'close', 5);
+BW = bwmorph(BW, 'bridge', 5);
+BW = bwmorph(BW, 'spur', 50);
 
+% figure()
+% imshow(BW); hold on;
+% BW = bwmorph(BW, 'remove', inf);
+% figure()
+% imshow(BW); hold on;
+% BW = bwmorph(BW, 'clean', inf);
+% figure()
+% imshow(BW); hold on;
+% BW = bwmorph(BW, 'diag', inf);
+% figure()
+% imshow(BW); hold on;
+% BW = bwmorph(BW, 'close', 5);
+% figure()
+% imshow(BW); hold on;
 
 % 2. Remove fake results (robot, table, small shapes, ... etc)
 region = regionprops(BW, 'BoundingBox', 'FilledArea', 'Perimeter', ...
     'Centroid', 'Image');
 
 homes_sz = [];
-% 
-%figure()
-%imshow(BW); hold on;
+
+% figure()
+% imshow(BW); hold on;
 
 for i = length(region):-1:1
     
@@ -46,11 +58,12 @@ for i = length(region):-1:1
     end
     % Set as not home (default)
     region(i).Home = 0;
+    region(i).Compacity = region(i).Perimeter^2/region(i).FilledArea;
     homes_sz = [region(i).FilledArea, homes_sz];
 end
 
 if length(region) < config.n_homes
-    region = []
+    region = [];
     return 
 end
 
@@ -88,7 +101,9 @@ for i = 1:length(region)
     region(i).Shape = config.shape_str{id_shape};
 end
 
-region = rmfield(region, {'Perimeter', 'FilledArea', 'Image', 'ShapeProb'});
+if ~config.debug
+    region = rmfield(region, {'Perimeter', 'FilledArea', 'Image', 'ShapeProb'});
+end
 
 
 end
