@@ -60,6 +60,7 @@ config.cmp_arrow_max_dist = 10;             % Max distancearoud thresh
 config.prop_shape_thresh = 0.8;             % Minimal probaility of shape
 % 0.2 - Robot detection
 config.black_v_thresh = 0.6;                % Value threshold
+config.shape_avoid_rad = 2;                 % Radius center shape avoid
 % 0.3 - Shape color detections
 config.r_color_detect = 5;                  % Color median radius
 config.color_str = ...
@@ -73,9 +74,16 @@ config.debug = 1;                           % Do not remove attributes regions
 config.save_res = 1;                        % Save results
 config.save_filename = 'res/display.png';   % Save filename
 
-%
-back = im2double(imread('bg1.png'));
-[ region_shape, region_robot ] = arena_seg(back, config);
+% Load image
+im_original = im2double(imread('bg1.png'));
+
+% Segmentation image
+region_robot = robot_fit(im_original, config);
+[ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config);
+
+% Draw results
+draw_arena( im_original, region_robot, homes, regular, ...
+    homeless, config )
 
 %% Test all
 
@@ -85,11 +93,14 @@ config.diplay_res = 0;
 for i = 3:length(listing)
     config.save_filename = sprintf('res/detection_%s', listing(i).name); 
     display(sprintf('%i/%i, %s', i, length(listing), listing(i).name))
-    back = im2double(imread(listing(i).name));
-    [region_shape, region_robot ] = arena_seg(back, config); 
-%     if ~isempty(region_robot)
-%         region_robot(1).Prob
-%     end
+    % Load image
+    im_original = im2double(imread(listing(i).name));
+    % Segmentation image
+    region_robot = robot_fit(im_original, config);
+    [ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config);
+    % Save results
+    draw_arena( im_original, region_robot, homes, regular, ...
+        homeless, config )
 end
 
 
