@@ -12,6 +12,8 @@
 
 2. boolean = CheckRobotHome(LocationRobot,homes) --> checks if Robot is at home (yes or no)
 
+3. angle = cal_angle(path) --> returns positive or negative angle from reference vector = [0 1 0] z-axis only there for calculation purposes (always set to zero in our case)
+
 # Christian:
 ## Functions:
 [ region_shape, region_robot ] = arena_seg( im_original, config )
