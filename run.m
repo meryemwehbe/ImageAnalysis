@@ -87,9 +87,11 @@ shapes = region_shape;
 % func
 im_avoid = zeros(im_size(1), im_size(2));
 for i=1:length(shapes)
-    shapes(i).BoundingBox
+    bb = ceil(shapes(i).BoundingBox)
+    im_avoid(bb(2):bb(2)+bb(4), bb(1):bb(1)+bb(3)) = 1;
 end
 % Disp
+figure
 imshow(im_avoid)
 
 %% Test all
