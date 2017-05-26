@@ -73,10 +73,24 @@ config.debug = 1;                           % Do not remove attributes regions
 config.save_res = 1;                        % Save results
 config.save_filename = 'res/display.png';   % Save filename
 
-r = load('matlab.mat');
-back = im2double(r.pic);
-% back = im2double(imread('bg1.png'));
+% r = load('matlab.mat');
+% back = im2double(r.pic);
+back = im2double(imread('bg1.png'));
 [ region_shape, region_robot ] = arena_seg(back, config);
+
+%%
+
+% inputs
+im_size = size(back);
+shapes = region_shape;
+
+% func
+im_avoid = zeros(im_size(1), im_size(2));
+for i=1:length(shapes)
+    shapes(i).BoundingBox
+end
+% Disp
+imshow(im_avoid)
 
 %% Test all
 
