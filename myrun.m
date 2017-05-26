@@ -1,5 +1,5 @@
 load('region.mat');
-[homes,ordered] = Ordering(region);
+[homes,ordered, homeless] = Ordering(region);
 
 LocationRobot.x = 470; 
 LocationRobot.y = 400; 
