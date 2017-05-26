@@ -128,4 +128,6 @@ for i = 3:length(listing)
 end
 
 grid on; xlabel('Hue'); ylabel('Saturation')
+
+% homes = Ordering(region);
     

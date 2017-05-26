@@ -54,3 +54,10 @@ Will segement original image and look for shapes and robot. Config array can be 
 |:----------- |:---------- |:----------------------------------- |
 | Centroid    | [x,y]      | Centroid of the arrow head          |
 | Orientation | scalar     | Angle in degree according to x-axis |
+
+# Patryk:
+## Functions:
+[ path_linearised ] = shortest_path( bin_img, robot_radius,point_start, point_stop ) --> returns the path from point_start(X-Y) to point_stop(X-Y), avoids obstacles available in the binary_img. Obstacles are pixels = 1, robot can move in pixels = 0. The result path is only an array of linearised path points to follow, including start and stop. Should run less than 2s, since for the path-finding algorithm the image is resized to be smaller. 
+**The path finding function is based on http://ch.mathworks.com/matlabcentral/fileexchange/8625-shortest-path-with-obstacle-avoidance--ver-1-3- .  
+
+[ angles, lengths ] = transform_path_to_angle_length( path ) --> Transforms the array of N X-Y path points(from shortest_path() ) to N-1 arrays of  robot rotation angles and lengths in pixels. This array can be used to move the robot. 
