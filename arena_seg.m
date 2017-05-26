@@ -3,11 +3,19 @@ function [ region_shape, region_robot ] = arena_seg( im_original, config  )
 %   Detailed explanation goes here
 
 
+% 1. Analyze arena
 region_robot = robot_fit(im_original, config);
 region_shape = shape_fit(im_original, config);
 
 
 % 2. Display results for debug 
+
+% Check if output needed
+if ~config.diplay_res && ~config.save_res
+   return 
+end
+
+% Display results ?
 if config.diplay_res
     fig = figure();
 else
@@ -43,6 +51,7 @@ if ~isempty(region_robot)
     plot(vec_point(2,1), vec_point(2,2), 'or'); hold off;
 end 
 
+% Save results ?
 if config.save_res
     saveas(fig, config.save_filename)
 end

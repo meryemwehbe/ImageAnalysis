@@ -73,8 +73,9 @@ config.debug = 1;                           % Do not remove attributes regions
 config.save_res = 1;                        % Save results
 config.save_filename = 'res/display.png';   % Save filename
 
-%
-back = im2double(imread('bg1.png'));
+r = load('matlab.mat');
+back = im2double(r.pic);
+% back = im2double(imread('bg1.png'));
 [ region_shape, region_robot ] = arena_seg(back, config);
 
 %% Test all

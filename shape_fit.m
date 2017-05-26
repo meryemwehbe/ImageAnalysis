@@ -102,6 +102,8 @@ for i = 1:length(region)
     region(i).Shape = config.shape_str{id_shape};
 end
 
+% 6.
+
 if ~config.debug
     region = rmfield(region, {'Perimeter', 'FilledArea', 'Image', ...
         'ShapeProb', 'Compacity'});
