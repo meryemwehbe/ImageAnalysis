@@ -1,12 +1,10 @@
-clc; clear all; close all;
+%clc; clear all; close all;
 
-%%
-clc; clear all; close all;
-ev3 = legoev3('bt','001653495fad');
-vid = videoinput('winvideo',1,'RGB24_640x480');
+%ev3 = legoev3('bt','001653495fad');
+%vid = videoinput('winvideo',1,'RGB24_640x480');
 
-motor_r = motor(ev3, 'A');
-motor_l = motor(ev3, 'B');
+%motor_r = motor(ev3, 'A');
+%motor_l = motor(ev3, 'B');
 %% config
 config.n_homes = 2;                         % Number of homes
 config.shape_str = ...
@@ -33,8 +31,20 @@ config.debug = 1;                           % Do not remove attributes regions
 config.save_res = 1;                        % Save results
 config.save_filename = 'res/display.png';   % Save filename
 
+% Robot controller options
+config.max_angle_err = 2; %deg
+p1togo = [144 192];
+
+p2togo = [232 401];
+
+p3togo = [413 257];
+
 %% go with the robot to sample point [400, 300] 
-moveRobot( vid, config, [400, 300] , motor_l, motor_r);
+%for i = 1:3
+ %   moveRobot( vid, config, p1togo , motor_l, motor_r);
+ %   moveRobot( vid, config, p2togo , motor_l, motor_r);
+    moveRobot( vid, config, p3togo , motor_l, motor_r);
+%end
 
 %TODO test the fiunction with different robot and endpoint positions !!!
 % just test if its going always there !! 
