@@ -82,8 +82,7 @@ region_robot = robot_fit(im_original, config);
 [ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config);
 
 % Draw results
-draw_arena( im_original, region_robot, homes, regular, ...
-    homeless, config )
+draw_arena( im_original, region_robot, homes, regular, homeless, config )
 
 %% Test all
 
