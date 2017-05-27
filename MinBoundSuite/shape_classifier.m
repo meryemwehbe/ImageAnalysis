@@ -27,8 +27,13 @@ r_tri_est = 0.5*sin_t*prod(sqrt(sum(abs(r_tri_est).^2,2))); % Get Area
 [rectx, recty, ~, ~] = minboundrect(X, Y, 'a');
 r_squ_est = [rectx(1:2)-rectx(2:3), recty(1:2)-recty(2:3)]; % Extract sides
 r_squ_edge = sqrt(sum(abs(r_squ_est).^2,2));
-r_squ_est = prod(sqrt(sum(abs(r_squ_est).^2,2))) * max(r_squ_edge)/min(r_squ_edge); % Get Area
-
+r_squ_est = prod(sqrt(sum(abs(r_squ_est).^2,2))) *  max(r_squ_edge)/min(r_squ_edge); % Get Area
+% Get Area
+% Check if square of deformed
+if min(r_squ_edge)/max(r_squ_edge) < 0.7
+    r_squ_est = inf;
+end
+ 
 % Return ratio with original size
 p_bb = area_gt*1./([r_circle_est, r_squ_est, r_tri_est]);
 p = p_bb;

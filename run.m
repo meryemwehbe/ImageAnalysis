@@ -57,9 +57,9 @@ config.compacity_thresh = 30;               % Compacity threshold, bad shape
 config.cmp_arrow_thresh = 57;               % Wanted compacity
 config.ecc_arrow_thresh = 0.77;               % Wanted compacity
 config.cmp_arrow_max_dist = 10;             % Max distancearoud thresh
-config.prop_shape_thresh = 0.8;             % Minimal probaility of shape
+config.prop_shape_thresh = 0.5;             % Minimal probaility of shape
 % 0.2 - Robot detection
-config.black_v_thresh = 0.6;                % Value threshold
+config.black_v_thresh = 0.5;                % Value threshold
 config.shape_avoid_rad = 2;                 % Radius center shape avoid
 % 0.3 - Shape color detections
 config.r_color_detect = 5;                  % Color median radius
@@ -75,14 +75,28 @@ config.save_res = 1;                        % Save results
 config.save_filename = 'res/display.png';   % Save filename
 
 % Load image
-im_original = im2double(imread('bg1.png'));
+im_original = im2double(imread('notworking1.jpg'));
+%im_original = im2double(imread('robot_not_detected.jpg'));
 
 % Segmentation image
 region_robot = robot_fit(im_original, config);
-[ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config);
+[ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config, region_robot);
 
 % Draw results
 draw_arena( im_original, region_robot, homes, regular, homeless, config )
+
+%%
+I = rgb2hsv(im_original);
+Jf = zeros(size(im_original,1), size(im_original,2));
+reg_maxdist = 0.05;
+figure
+for i = 1:length(regular)
+    J=region_growing_hsv(I(:,:,1), regular(i), reg_maxdist);
+    Jf = Jf | J;
+    imshow(Jf, [])
+end
+
+
 
 %% Test all
 
@@ -96,7 +110,7 @@ for i = 3:length(listing)
     im_original = im2double(imread(listing(i).name));
     % Segmentation image
     region_robot = robot_fit(im_original, config);
-    [ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config);
+    [ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config, region_robot);
     % Save results
     draw_arena( im_original, region_robot, homes, regular, ...
         homeless, config )
