@@ -74,4 +74,3 @@ point_stop = ceil([point_stop(2) point_stop(1)] * scale_factor);
 
 path_real = [point_start; path_real; point_stop]
 end
-

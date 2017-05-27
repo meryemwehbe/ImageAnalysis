@@ -15,9 +15,9 @@ config.compacity_thresh = 30;               % Compacity threshold, bad shape
 config.cmp_arrow_thresh = 57;               % Wanted compacity
 config.ecc_arrow_thresh = 0.77;               % Wanted compacity
 config.cmp_arrow_max_dist = 10;             % Max distancearoud thresh
-config.prop_shape_thresh = 0.8;             % Minimal probaility of shape
+config.prop_shape_thresh = 0.6;             % Minimal probaility of shape
 % 0.2 - Robot detection
-config.black_v_thresh = 0.6;                % Value threshold
+config.black_v_thresh = 0.5;                % Value threshold
 % 0.3 - Shape color detections
 config.r_color_detect = 5;                  % Color median radius
 config.color_str = ...
@@ -30,22 +30,28 @@ config.diplay_res = 1;                      % Dispaly image with detected obj
 config.debug = 1;                           % Do not remove attributes regions
 config.save_res = 1;                        % Save results
 config.save_filename = 'res/display.png';   % Save filename
+config.shape_avoid_rad = 2;
+
+% motor constants DO CALIBRATION BEFORE with conf = calibration() function 
+config.degreespersec = 90; % default values
+config.pixpersec = 100; % default values
 
 % Robot controller options
-config.max_angle_err = 2; %deg
-p1togo = [144 192];
+config.max_angle_err = 2; %maximum turn angle after we go forward
+config.point_point_accuracy = 50; % maximum error between stop point and robot point after we consider them the same 
+config.robot_radius = 100;
+
+%% !!! calibration !!!!!!!!
+calibrate();
+
+%% TESTING
+p1togo = [408 255];
 
 p2togo = [232 401];
 
 p3togo = [413 257];
 
-%% go with the robot to sample point [400, 300] 
-%for i = 1:3
- %   moveRobot( vid, config, p1togo , motor_l, motor_r);
- %   moveRobot( vid, config, p2togo , motor_l, motor_r);
-    moveRobot( vid, config, p3togo , motor_l, motor_r);
-%end
+%% this is my new function
+move_to_avoid_obstacles(vid, config, motor_l, motor_r, p1togo);
 
-%TODO test the fiunction with different robot and endpoint positions !!!
-% just test if its going always there !! 
-
+%%
