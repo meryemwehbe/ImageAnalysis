@@ -1,16 +1,26 @@
-function [ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit( im_original, config )
+function [ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit( im_original, config, robot_pos )
 % SHAPE_FIT Extract shapes positions.
 %   region = SHAPE_FIT(Im, Config). Take the original image and extract the
 %   shapes and their position. If not shape not found or home badly 
 %   detected return empty array.
 
+if nargin < 3
+    robot_pos = []
+end
+
 % Main variables
 size_image = size(im_original, 1)*size(im_original, 2);
 
 % 1. Split forground / background
-BW = edge(rgb2gray(im_original),'Canny');
-BW = bwmorph(BW, 'bridge', 5);
+%[BW, T] = edge(rgb2gray(im_original),'Canny', []);
+BW = edge(rgb2gray(im_original),'Canny', [0.01, 0.05]);
+
+BW = bwmorph(BW, 'thicken', 1);
+BW = bwmorph(BW, 'close', 1);
+BW = bwmorph(BW, 'shrink', 1);
+% BW = bwmorph(BW, 'bridge', 5);
 BW = bwmorph(BW, 'spur', 50);
+
 
 % figure()
 % imshow(BW); hold on;
@@ -32,9 +42,12 @@ region = regionprops(BW, 'BoundingBox', 'FilledArea', 'Perimeter', ...
     'Centroid', 'Image', 'PixelIdxList');
 
 homes_sz = [];
-
+% 
 % figure()
 % imshow(BW); hold on;
+% 4. Detection of colors (HSV)
+f_rob_dist = @ (reg, rob) sqrt((reg.Centroid(1)-rob.Centroid(1)).^2 + ...
+    (reg.Centroid(2)-rob.Centroid(2)).^2);
 
 for i = length(region):-1:1
     
@@ -46,6 +59,11 @@ for i = length(region):-1:1
     end
     % Check compacity limit
     if region(i).Perimeter^2/region(i).FilledArea > config.compacity_thresh
+        region(i) = [];
+        continue
+    end
+    % Check if not robo detection
+    if ~isempty(robot_pos) && f_rob_dist(robot_pos(1), region(i)) < 20
         region(i) = [];
         continue
     end
@@ -63,7 +81,11 @@ for i = length(region):-1:1
 end
 
 if length(region) < config.n_homes
-    region = [];
+    homes = [];
+    regular = [];
+    homeless = [];
+    ordered_dest = [] ;
+    avoid_map = [];
     return 
 end
 
