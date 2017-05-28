@@ -22,25 +22,17 @@ for i=1:10 % angle regulation loop - after 10 times we stop adjusting  angle and
     angle = cal_angle([p1';p2']); % TODO Meryem put your point-point angle calc  function here
 
     %TODO Meryem
-    if(angle*angle_robot > 0 )
-        if(angle > 0 && angle_robot < angle )
-            THEANGLE = -1*abs(angle-angle_robot);
-        elseif(angle > 0)
-              THEANGLE = abs(angle-angle_robot);
-        elseif(angle < 0 && abs(angle_robot) < abs(angle))  
-            THEANGLE = abs(angle-angle_robot);
-        else
-            THEANGLE = -1*abs(angle-angle_robot);
-        end
-    else
-       THEANGLE = -1*abs(angle_robot-angle);
+    if((angle - angle_robot) < 180 && (angle - angle_robot) >0 )
+        rotation_angle = -abs(angle - angle_robot);
+    else 
+        rotation_angle = abs(angle - angle_robot);
     end
     
     
-    THEANGLE
+    rotation_angle
     % turn the robot to degree difference 
-    if(abs(THEANGLE)> cfg.max_angle_err)
-        turn_deg( THEANGLE ,cfg, motor_l, motor_r)
+    if(abs(rotation_angle)> cfg.max_angle_err)
+        turn_deg( rotation_angle ,cfg, motor_l, motor_r)
     else
         break;
     end
