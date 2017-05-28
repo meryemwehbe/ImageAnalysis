@@ -12,6 +12,8 @@
 
 2. boolean = CheckRobotHome(LocationRobot,homes) --> checks if Robot is at home (yes or no)
 
+3. angle = cal_angle(path) --> returns positive or negative angle from reference vector = [0 1 0] z-axis only there for calculation purposes (always set to zero in our case)
+
 # Christian:
 ## Functions:
 [ region_shape, region_robot ] = arena_seg( im_original, config )
@@ -61,3 +63,17 @@ Will segement original image and look for shapes and robot. Config array can be 
 **The path finding function is based on http://ch.mathworks.com/matlabcentral/fileexchange/8625-shortest-path-with-obstacle-avoidance--ver-1-3- .  
 
 [ angles, lengths ] = transform_path_to_angle_length( path ) --> Transforms the array of N X-Y path points(from shortest_path() ) to N-1 arrays of  robot rotation angles and lengths in pixels. This array can be used to move the robot. 
+
+[ ] = moveRobot( vid, cfg, pos_fin , motor_l, motor_r) --> Moves robot to a point pos_fin straight. 
+
+[ ] = move_to_avoid_obstacles( vid, config, motor_l, motor_r, p1togo) --> goes to the point with obstacle avoidance (automatically calculates and follows with multiple stops - intermediate points).
+
+[ ] = turn_deg( angle , config, motor_l, motor_r) --> turn the robot by some angle 
+
+[  ] = go_forward_pixels( pixels, config,  motor_l, motor_r ) --> robot goes forward a number of pixels
+
+[ config ] = calibrate( config, vid, motor_l, motor_r ) --> This function calibrates the motor constants is config (degreespersec and pixpersec). the constants are used in turn_deg() and go_forward_pixels() functions.
+
+
+
+
