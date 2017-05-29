@@ -17,7 +17,7 @@ else  % if angle is big(>90), just turn fast
     motor_l.Speed=-70*sign(angle);
     motor_r.Speed=70*sign(angle);
     start(motor_l);start(motor_r);
-    pause(abs(angle/(config.degreespersec*1.4))% the constant from calibration
+    pause(abs(angle/(config.degreespersec*1.4)))% the constant from calibration
     stop(motor_r);stop(motor_l);
 end
     

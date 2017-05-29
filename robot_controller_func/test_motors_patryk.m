@@ -1,10 +1,10 @@
-%clc; clear all; close all;
+clc; clear all; close all;
 
-%ev3 = legoev3('bt','001653495fad');
-%vid = videoinput('winvideo',1,'RGB24_640x480');
+ev3 = legoev3('bt','001653495fad');
+vid = videoinput('winvideo',1,'RGB24_640x480');
 
-%motor_r = motor(ev3, 'A');
-%motor_l = motor(ev3, 'B');
+motor_r = motor(ev3, 'A');
+motor_l = motor(ev3, 'B');
 %% config
 config.n_homes = 2;                         % Number of homes
 config.shape_str = ...
@@ -38,13 +38,17 @@ config.pixpersec = 100; % default values
 
 % Robot controller options
 config.max_angle_err = 2; %maximum turn angle after we go forward
+config.max_dist_err = 10;
 config.point_point_accuracy = 50; % maximum error between stop point and robot point after we consider them the same 
 config.robot_radius = 100;
 
 %% !!! calibration !!!!!!!!
-calibrate();
+%calibrate();
 
 %% TESTING
+
+moveRobot(vid,config,[179 165],motor_l,motor_r);
+
 p1togo = [408 255];
 
 p2togo = [232 401];

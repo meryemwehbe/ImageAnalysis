@@ -65,6 +65,10 @@ if sum(v < 0) > sum(v > 0)
     region_rob.Orientation = radtodeg(pi) + region_rob.Orientation;
 end
 
+if region_rob.Orientation < 0
+    region_rob.Orientation = region_rob.Orientation + 360;
+end
+
 if ~config.debug
     region_rob = rmfield(region_rob, {'Image', 'FilledArea', 'Perimeter'});
 end
