@@ -10,17 +10,19 @@ length = sqrt(sum((pos_robot-pos_fin).^2));
 angle = cal_angle(pos_robot, pos_fin); 
 rotation_angle = -(angle - angle_robot);
 
-% Check if within an acceptable radiuss
-if length < cfg.max_dist_err
-    move_success = 1;
-    return;
-end
+% Check if within an acceptable radius
+% if length < cfg.max_dist_err
+%     move_success = 1;
+%     return;
+% end
 
 % turn the robot to degree difference is needed and go forward
 if(abs(rotation_angle)> cfg.max_angle_err)
     %turn_deg( rotation_angle ,cfg, motor_l, motor_r)
 else
     %go_forward_pixels(length, cfg, motor_l, motor_r );
+    move_success = 1;
+    return
 end
 
 move_success = 0;

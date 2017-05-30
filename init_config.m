@@ -37,6 +37,7 @@ config.color_str = ...
 config.color_hue_thresh = ...
     [0.032, 0.13, 0.39, 0.072, 0.63, 0.94, inf];
 config.color_saturation_thresh = 0.25;
+config.debug = 1;
 
 
 % * Robot control
@@ -51,7 +52,7 @@ config.color_saturation_thresh = 0.25;
 config.degreespersec = 90;          % Estimation of rotation in deg/s
 config.pixpersec = 100;             % Estimation of distance in px/s 
 config.max_angle_err = 2;           % Maximum angle error allowed
-config.max_dist_err = 10;           % Maximum distance error allowed
+config.max_dist_err = 15;           % Maximum distance error allowed
 
 end
 
