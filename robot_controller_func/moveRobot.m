@@ -1,4 +1,5 @@
-function [ move_success, angle] = moveRobot( region_robot, cfg, pos_fin , motor_l, motor_r)
+function [ move_success, angle] = moveRobot( region_robot, cfg, ...
+    pos_fin, motor_l, motor_r)
 %MOVEROBOT Moves robot to a point pos_fin
 
 % get the angle and position of the robot
@@ -18,9 +19,9 @@ rotation_angle = -(angle - angle_robot);
 
 % turn the robot to degree difference is needed and go forward
 if(abs(rotation_angle)> cfg.max_angle_err)
-    %turn_deg( rotation_angle ,cfg, motor_l, motor_r)
+    turn_deg( rotation_angle ,cfg, motor_l, motor_r)
 else
-    %go_forward_pixels(length, cfg, motor_l, motor_r );
+    go_forward_pixels(length, cfg, motor_l, motor_r );
     move_success = 1;
     return
 end

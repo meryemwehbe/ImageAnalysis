@@ -2,6 +2,7 @@ clear;
 clc;
 close all;
 
+
 % ******************** 1 - Init ********************
 % ** 1.1 - Init workspace and config
 
@@ -34,7 +35,9 @@ motor_l = motor(ev3, 'B');
 display('Init camera ...')
 vid = videoinput('winvideo',1,'RGB24_640x480');
 
+
 % ******************** 2 - Controle gobal ********************
+
 % Go to all shapes in deined order
 for action_id = 1:size(ordered_dest, 1)
     
@@ -55,7 +58,9 @@ for action_id = 1:size(ordered_dest, 1)
         
         while ~temppt_reached
             
+            
             % ******************** 3 - Controle sub ********************
+            
             % ** 3.1 - Get image of situation and fit robot (where to go next) ?
             % pic = im2double(imread(sprintf('img%i.png', i)));
             pic = im2double(getsnapshot(vid));
