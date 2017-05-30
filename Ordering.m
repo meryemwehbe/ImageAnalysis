@@ -35,6 +35,7 @@ while( (count ~= length(region) - length(homes)) && k <= length(color_to_detect)
       k=k+1;
 end
 
+ordered_dest = ceil(ordered_dest);
 
 end
 

@@ -14,7 +14,7 @@ thresh = hsv_im(:,:,3) < config.black_v_thresh;
 % 2. Get matching regions and look for bigest (according also to limit
 % size)
 region_rob = regionprops(thresh, 'Perimeter', 'FilledArea', 'Image', ...
-    'Eccentricity', 'Orientation', 'Centroid');
+    'Eccentricity', 'Orientation', 'Centroid', 'BoundingBox');
 
 prob_all = [];
 

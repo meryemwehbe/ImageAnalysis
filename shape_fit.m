@@ -137,12 +137,19 @@ for i=1:length(homeless)
 end
 
 % Avoid zone shape_center
-for i=1:length(regular)
-    % im_avoid(homeless_objects(i).PixelIdxList) = 1;
-    cen = ceil(regular(i).Centroid);
-    avoid_map(cen(2)-config.shape_avoid_rad:cen(2)+config.shape_avoid_rad, ...
-        cen(1)-config.shape_avoid_rad:cen(1)+config.shape_avoid_rad) = 1;
-end
+% for i=1:length(regular)
+%     % im_avoid(homeless_objects(i).PixelIdxList) = 1;
+%     cen = ceil(regular(i).Centroid);
+%     avoid_map(cen(2)-config.shape_avoid_rad:cen(2)+config.shape_avoid_rad, ...
+%         cen(1)-config.shape_avoid_rad:cen(1)+config.shape_avoid_rad) = 1;
+% end
+
+% Add border arena
+avoid_map(1,:) = 1;
+avoid_map(end,:) = 1;
+avoid_map(:,1) = 1;
+avoid_map(:,end) = 1;
+
 
 % If not debug remove useless fields in structure
 if ~config.debug

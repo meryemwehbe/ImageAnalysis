@@ -26,7 +26,7 @@ while(1)
     %plot the shortest path on the figure
     imshow(avoid_map)
     hold on;
-    plot(path(:,2),path(:,1), '-*r');
+    plot(path(:,2),path(:,1), '--*r', 'Linewidth', 3);
     hold off;
     
     % make the next step to the point of the path

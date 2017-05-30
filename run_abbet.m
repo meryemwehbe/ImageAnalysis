@@ -4,8 +4,10 @@ close all;
 
 addpath('image_set/background')
 addpath('image_set/motion')
-addpath('shapes')
 addpath('MinBoundSuite')
+addpath('drawing')
+addpath('robot_controller_func')
+addpath('path_A_To_B_obstacles')
 
 % Will segement original image and look for shapes and robot. Config array can be parametrized if needed
 % * config
@@ -74,67 +76,113 @@ config.debug = 1;                           % Do not remove attributes regions
 config.save_res = 1;                        % Save results
 config.save_filename = 'res/display.png';   % Save filename
 
-% Load image
-im_original = im2double(imread('notworking1.jpg'));
-%im_original = im2double(imread('robot_not_detected.jpg'));
+config.degreespersec = 90; % default values
+config.pixpersec = 100; % default values
 
-% Segmentation image
-region_robot = robot_fit(im_original, config);
-[ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config, region_robot);
+% Robot controller options
+config.max_angle_err = 2; %maximum turn angle after we go forward
+config.max_dist_err = 10;
 
-% Draw results
-draw_arena( im_original, region_robot, homes, regular, homeless, config )
+% Live draw try 
 
-%%
-I = rgb2hsv(im_original);
-Jf = zeros(size(im_original,1), size(im_original,2));
-reg_maxdist = 0.05;
-figure
-for i = 1:length(regular)
-    J=region_growing_hsv(I(:,:,1), regular(i), reg_maxdist);
-    Jf = Jf | J;
-    imshow(Jf, [])
+% **** 1 - Init arena
+tic;
+pic = im2double(imread(sprintf('img%i.png', 1)));
+region_robot = robot_fit(pic, config);
+[ homes, regular, homeless, ordered_dest, avoid_map ] ...
+    = shape_fit(pic, config, region_robot);
+r = init_arena_draw( pic, region_robot, homes, regular, homeless);
+wtime = toc; display(sprintf( 'Init time %f', wtime ));
+
+
+i = 0;
+% **** 2 - game_logic
+
+% Go to all shapes in deined order
+for action_id = 1:size(ordered_dest, 1)
+    i = i +1;
+    
+    % ** 2.1 - Get image of situation and fit robot (where to go next) ?
+    % pic=im2double(getsnapshot(vid));
+    pic = im2double(imread(sprintf('img%i.png', i)));
+    tic; region_robot = robot_fit(pic , config );
+    wtime = toc; display(sprintf( 'Robot fit time %f', wtime ));
+    
+    % ** 2.1.1 - Check if distance reached
+    
+    % ** 2.2 Compute shortest path to point next in line
+    p1togo = ordered_dest(action_id,:);
+    tic; path_cgt = shortest_path( avoid_map, region_robot, p1togo );
+    path_cgt = [path_cgt(:,2), path_cgt(:,1)];
+    wtime = toc; display(sprintf( 'Shortest time %f', wtime ));
+    
+    % ** 2.3 - Move robot to point wanted
+    tic;
+    % moveRobot( pic, cfg, pos_fin , motor_l, motor_r)
+    [ move_success, ang_reach ] = moveRobot( region_robot, config, path_cgt(2, :) , [], []);
+    wtime = toc; display(sprintf( 'Robot move calculs %f', wtime ));
+    
+    % ** 2.4 - Draw situation plot
+    data_plot.region_robot = region_robot;
+    data_plot.path_cgt = path_cgt;
+    data_plot.ang_reach = ang_reach;
+    
+    r = draw_robot(r, pic, data_plot);
+    pause()
 end
 
 
 
-%% Test all
-
-listing = dir('image_set/background');
-config.diplay_res = 0;
-
-for i = 3:length(listing)
-    config.save_filename = sprintf('res/detection_%s', listing(i).name); 
-    display(sprintf('%i/%i, %s', i, length(listing), listing(i).name))
-    % Load image
-    im_original = im2double(imread(listing(i).name));
-    % Segmentation image
-    region_robot = robot_fit(im_original, config);
-    [ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(im_original, config, region_robot);
-    % Save results
-    draw_arena( im_original, region_robot, homes, regular, ...
-        homeless, config )
-end
-
-
-%% Color region
-
-listing = dir('image_set/background');
-
-figure();
-for i = 3:length(listing)
-    display(sprintf('%i/%i, %s', i, length(listing), listing(i).name))
-    back = im2double(imread(listing(i).name));
-    region = shape_fit(back, config);
-    for j = 1:length(region)
-       plot(region(j).ColorHSV(1), region(j).ColorHSV(2), 'o', ...
-           'MarkerSize', 5 + 5*region(j).ColorHSV(3), ...
-           'MarkerEdgeColor', hsv2rgb(region(j).ColorHSV), ...
-           'MarkerFaceColor', hsv2rgb(region(j).ColorHSV)); hold on;
-    end
-end
-
-grid on; xlabel('Hue'); ylabel('Saturation')
-
-% homes = Ordering(region);
+% %%
+% I = rgb2hsv(pic);
+% Jf = zeros(size(pic,1), size(pic,2));
+% reg_maxdist = 0.05;
+% figure
+% for i = 1:length(regular)
+%     J=region_growing_hsv(I(:,:,1), regular(i), reg_maxdist);
+%     Jf = Jf | J;
+%     imshow(Jf, [])
+% end
+% 
+% 
+% 
+% %% Test all
+% 
+% listing = dir('image_set/background');
+% config.diplay_res = 0;
+% 
+% for i = 3:length(listing)
+%     config.save_filename = sprintf('res/detection_%s', listing(i).name); 
+%     display(sprintf('%i/%i, %s', i, length(listing), listing(i).name))
+%     % Load image
+%     pic = im2double(imread(listing(i).name));
+%     % Segmentation image
+%     region_robot = robot_fit(pic, config);
+%     [ homes, regular, homeless, ordered_dest, avoid_map ] = shape_fit(pic, config, region_robot);
+%     % Save results
+%     draw_arena( pic, region_robot, homes, regular, ...
+%         homeless, config )
+% end
+% 
+% 
+% %% Color region
+% 
+% listing = dir('image_set/background');
+% 
+% figure();
+% for i = 3:length(listing)
+%     display(sprintf('%i/%i, %s', i, length(listing), listing(i).name))
+%     back = im2double(imread(listing(i).name));
+%     region = shape_fit(back, config);
+%     for j = 1:length(region)
+%        plot(region(j).ColorHSV(1), region(j).ColorHSV(2), 'o', ...
+%            'MarkerSize', 5 + 5*region(j).ColorHSV(3), ...
+%            'MarkerEdgeColor', hsv2rgb(region(j).ColorHSV), ...
+%            'MarkerFaceColor', hsv2rgb(region(j).ColorHSV)); hold on;
+%     end
+% end
+% 
+% grid on; xlabel('Hue'); ylabel('Saturation')
+% 
+% % homes = Ordering(region);
     
