@@ -52,10 +52,9 @@ try
     path_real(end, :) = point_stop;
 
 catch
-    path_real = [];
+    path_real = [[point_start(1), point_start(2)]; [point_stop(1), point_stop(2)]];
 end
 
 map_avoid = logical(imresize(im_obst_with_robot, floor(size(im_obst_with_robot)*scale_factor)));
-path_real = [[point_start(1), point_start(2)]; path_real; [point_stop(1), point_stop(2)]];
 
 end

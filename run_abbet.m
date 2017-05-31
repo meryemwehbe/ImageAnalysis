@@ -36,7 +36,6 @@ disp('Calibrate robot ...');
 config = calibrate(config, vid, motor_l, motor_r);
 
 %% 
-clc;
 % ** 1.5 - Init arena
 disp('Init area and shapes ...')
 % pic = im2double(imread(sprintf('img%i.png', 1)));
@@ -45,7 +44,7 @@ trigger(vid); pic = im2double(getdata(vid));
 region_robot = robot_fit(pic, config);
 [ homes, regular, homeless, ordered_dest, avoid_map ] ...
     = shape_fit(pic, config, region_robot);
-r = init_arena_draw( pic, region_robot, homes, regular, homeless);
+r = init_arena_draw( pic, region_robot, homes, regular, homeless, avoid_map);
 
 % ******************** 2 - Controle gobal ********************
 
