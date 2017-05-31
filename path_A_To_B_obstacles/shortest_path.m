@@ -35,7 +35,7 @@ span_y = span_y(span_y > 0 & span_y <= size(im_obst_with_robot, 2));
 im_obst_with_robot(span_x, span_y) = 0;
 
 try
-    [r,c] = shpath(im_obst_with_robot, point_start_fl(2),point_start_fl(1),point_stop_fl(2), point_stop_fl(1));
+    [r,c] = shpath(im_obst_with_robot, point_start_fl(2),point_start_fl(1),point_stop_fl(2), point_stop_fl(1), config);
     path = [r,c]*scale_factor; path = [path(:,2), path(:,1)];
     
     % Remove points to close
@@ -52,6 +52,7 @@ try
     path_real(end, :) = point_stop;
 
 catch
+    fprintf(2,'\t Unexpected spath fail\n');
     path_real = [[point_start(1), point_start(2)]; [point_stop(1), point_stop(2)]];
 end
 

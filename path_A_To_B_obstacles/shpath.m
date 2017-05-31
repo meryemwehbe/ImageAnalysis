@@ -1,4 +1,4 @@
-function varargout=shpath(MM,ri,ci,rf,cf)
+function varargout=shpath(MM,ri,ci,rf,cf, config)
 % SHPATH - shortest path with obstacle avoidance
 %
 % USAGE:
@@ -134,6 +134,8 @@ function varargout=shpath(MM,ri,ci,rf,cf)
 
 % input handling:
 
+start_time = clock;
+
 M=logical(MM);
 if any([ri ci rf cf] ~= round([ri ci rf cf]))
     error('Initial and final points must have integer row & column coordinates.')
@@ -176,6 +178,10 @@ while nochangepop < 20
     yespop = sum(W(:)>1);
     if abs(yespop-yespopold) < 1
         nochangepop = nochangepop + 1;
+    end
+    
+    if(etime(clock, start_time) > config.timeout_spath)
+        return
     end
 end
 
@@ -245,6 +251,9 @@ while continflag
     if ((r(iter+1)-ri)^2+(c(iter+1)-ci)^2)<1;
         continflag=0;
     end
+    if(etime(clock, start_time) > config.timeout_spath)
+        return
+    end
 end
 
 % clean up path coordinates:
@@ -293,6 +302,9 @@ while continflag
     c(k)=c(k)-dc(k);
     if max(abs([r-rold;c-cold])) < 1e-4 % decrease to 1e-6 for finer precision
         continflag=0;
+    end
+    if(etime(clock, start_time) > config.timeout_spath)
+        return
     end
 end
 

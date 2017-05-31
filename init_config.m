@@ -19,12 +19,12 @@ function [ config ] = init_config( )
 
 config.n_homes = 2;                         % Number of homes
 config.shape_str = ...
-    {'Circle', 'Square', 'Triangle'};
+    {'Circle', 'Square', 'Triangle'};       % Shape names
 config.size_min_thresh = 1e-3;              % Minimum size objects
 config.size_max_thresh = 1e-1;              % Maximum size objects
 config.compacity_thresh = 30;               % Compacity threshold, bad shape
 config.cmp_arrow_thresh = 57;               % Wanted compacity
-config.ecc_arrow_thresh = 0.77;               % Wanted compacity
+config.ecc_arrow_thresh = 0.77;             % Wanted compacity
 config.cmp_arrow_max_dist = 10;             % Max distancearoud thresh
 config.prop_shape_thresh = 0.5;             % Minimal probaility of shape
 % 0.2 - Robot detection
@@ -50,12 +50,13 @@ config.debug = 1;
 % | max_angle_err           | scalar  | Maximum angle error allowed                |
 % | max_dist_err            | scalar  | Maximum distance error allowed             |
 
-config.degreespersec = 100;          % Estimation of rotation in deg/s
-config.pixpersec = 90;             % Estimation of distance in px/s 
-config.max_angle_err = 10;           % Maximum angle error allowed
-config.max_angle_err_endpt = 5;           % Maximum angle error allowed
+config.degreespersec = 100;         % Estimation of rotation in deg/s
+config.pixpersec = 90;              % Estimation of distance in px/s 
+config.max_angle_err = 10;          % Maximum angle error allowed
+config.max_angle_err_endpt = 5;     % Maximum angle error allowed
 config.max_dist_err = 30;           % Maximum distance error allowed
-config.max_dist_err_endpt = 15;           % Maximum distance error allowed
+config.max_dist_err_endpt = 15;     % Maximum distance error allowed
+config.timeout_spath = 5;           % Timeout time in s
 
 end
 

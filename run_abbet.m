@@ -13,18 +13,18 @@ addpath('drawing')
 addpath('robot_controller_func')
 addpath('path_A_To_B_obstacles')
 
-disp('Init config ...')
+fprintf('Init config ...\n')
 config = init_config();
 fdist_rob = @(robot, point) norm(robot.Centroid-point);
 
 % ** 1.2 - Init robot communication
-disp('Init robot communication ...')
+fprintf('Init robot communication ...\n')
 ev3 = legoev3('bt','001653495fad');
 motor_r = motor(ev3, 'A');
 motor_l = motor(ev3, 'B');
 
 % ** 1.3 - Init video communication
-disp('Init camera ...');
+fprintf('Init camera ...\n');
 vid = videoinput('winvideo',1,'RGB24_640x480');
 set(vid, 'FramesPerTrigger', 1);
 set(vid, 'TriggerRepeat', Inf);
@@ -32,12 +32,12 @@ triggerconfig(vid, 'manual');
 start(vid);
 
 % ** 1.4 - Calibration robot
-disp('Calibrate robot ...');
+fprintf('Calibrate robot ...\n');
 config = calibrate(config, vid, motor_l, motor_r);
 
 %% 
 % ** 1.5 - Init arena
-disp('Init area and shapes ...')
+fprintf('Init area and shapes ...\n')
 % pic = im2double(imread(sprintf('img%i.png', 1)));
 % pic = im2double(getsnapshot(vid));
 trigger(vid); pic = im2double(getdata(vid));
@@ -105,7 +105,7 @@ for action_id = 1:size(ordered_dest, 1)
         % ** 2.2 If it is last point, double check precision otherwise
         % continue and recalculate shortest path
         if size(path_cgt, 1) == 2
-            disp('Check if close enought to final point');
+            fprintf('Check if close enought to final point\n');
             % Get new image and fit robot
             % pic = im2double(imread(sprintf('img%i.png', i)));
             % pic = im2double(getsnapshot(vid));
@@ -123,7 +123,7 @@ for action_id = 1:size(ordered_dest, 1)
                     pause(3)
                 end
                 beep(ev3) % Beep to signal reaching point
-                disp('Reached beeping ...');
+                fprintf('Reached beeping ...\n');
             else
                 fprintf('\t Too far %3.3f\n', dist_point_cgt);
             end
