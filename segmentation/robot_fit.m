@@ -73,6 +73,9 @@ if ~config.debug
     region_rob = rmfield(region_rob, {'Image', 'FilledArea', 'Perimeter'});
 end
 
+% Shift centroid to back
+region_rob.Centroid = region_rob.Centroid + config.centroid_shift* ...
+    [-cos(deg2rad(region_rob.Orientation)), sin(deg2rad(region_rob.Orientation))];
 
 end
 

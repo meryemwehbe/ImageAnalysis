@@ -30,6 +30,7 @@ config.prop_shape_thresh = 0.5;             % Minimal probaility of shape
 % 0.2 - Robot detection
 config.black_v_thresh = 0.5;                % Value threshold
 config.shape_avoid_rad = 2;                 % Radius center shape avoid
+config.centroid_shift = 10;
 % 0.3 - Shape color detections
 config.r_color_detect = 5;                  % Color median radius
 config.color_str = ...
@@ -49,10 +50,12 @@ config.debug = 1;
 % | max_angle_err           | scalar  | Maximum angle error allowed                |
 % | max_dist_err            | scalar  | Maximum distance error allowed             |
 
-config.degreespersec = 90;          % Estimation of rotation in deg/s
-config.pixpersec = 100;             % Estimation of distance in px/s 
-config.max_angle_err = 2;           % Maximum angle error allowed
-config.max_dist_err = 15;           % Maximum distance error allowed
+config.degreespersec = 100;          % Estimation of rotation in deg/s
+config.pixpersec = 90;             % Estimation of distance in px/s 
+config.max_angle_err = 10;           % Maximum angle error allowed
+config.max_angle_err_endpt = 5;           % Maximum angle error allowed
+config.max_dist_err = 30;           % Maximum distance error allowed
+config.max_dist_err_endpt = 15;           % Maximum distance error allowed
 
 end
 

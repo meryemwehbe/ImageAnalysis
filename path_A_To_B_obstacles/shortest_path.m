@@ -2,7 +2,7 @@ function [ path_real ] = shortest_path( bin_img, region_robot, point_stop )
 %shortest_path Calculates the path from A to B avoiding ostacles in the
 %binary img
 
-robot_radius = ceil(max(region_robot.BoundingBox(3:4))/4);
+robot_radius = ceil(max(region_robot.BoundingBox(3:4))/2);
 point_start = ceil(region_robot.Centroid);
 bin_robot_shape = strel('disk',robot_radius,0).Neighborhood;
 % size_r = floor(size(bin_robot_shape,1)/4);
@@ -46,9 +46,16 @@ try
     Nb_path_points = (size(path,1));
     angle_diff = zeros(1,ceil(Nb_path_points));
     angle_last = 0;
-
+    
+%     ids_start = find( sqrt(sum((ones(length(path),1)*point_start ... 
+%         - [path(:, 2), path(:,1)]).^2, 2)) > config.max_dist_err);
+%     if isempty(ids_start)
+%         ids_start = 1;
+%     else
+%         ids_start = ids_start(1);
+%     end
     % calculating the angle difference after each point
-    for i = 1:(size(path,1))-1
+    for i = ids_start:(size(path,1))-1
         p1 = [path(i,2); path(i,1)];
         p2 = [path((i+1),2); path((i+1),1)];
         diff = p1-p2;
