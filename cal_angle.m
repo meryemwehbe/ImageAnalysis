@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/meryem
 function [ angle ] = cal_angle( path )
 %CAL_ANGLE Summary of this function goes here
 %   Calculates angle from reference vector [0 1 0] - > z coordinate only
@@ -15,6 +18,7 @@ end
 
 end
 
+<<<<<<< HEAD
 =======
 function [ angle ] = cal_angle( path )
 %CAL_ANGLE Summary of this function goes here
@@ -33,3 +37,6 @@ end
 end
 
 >>>>>>> refs/remotes/origin/master
+=======
+
+>>>>>>> origin/meryem
