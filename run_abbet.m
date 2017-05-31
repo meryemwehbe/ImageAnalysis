@@ -52,16 +52,15 @@ r = init_arena_draw( pic, region_robot, homes, regular, homeless);
 % Go to all shapes in deined order
 for action_id = 1:size(ordered_dest, 1)
     
-    fprintf('Progress game %i/%i', action_id, size(ordered_dest, 1))
+    fprintf('Progress game %i/%i\n', action_id, size(ordered_dest, 1))
     % Starts go to object point
     endpt_reached = 0;
     p1togo = ordered_dest(action_id,:);
     while ~endpt_reached
         
         % ** 2.1 Compute shortest path to point next in line
-        tic; path_cgt = shortest_path( avoid_map, region_robot, p1togo );
-        path_cgt = [path_cgt(:,2), path_cgt(:,1)];
-        wtime = toc; fprintf( '\t Shortest path new in %f', wtime );
+        tic; [path_cgt, map_avoid] = shortest_path( avoid_map, region_robot, p1togo, config );
+        wtime = toc; fprintf( '\t Shortest path new in %f\n', wtime );
         
         % Start going to subpoint in path
         temppt_reached = 0;
@@ -88,13 +87,14 @@ for action_id = 1:size(ordered_dest, 1)
            
             % ** 3.3 - Check if movement is finished ?
             if move_success
-                fprintf('\t Reached temp point on path')
+                fprintf('\t Reached temp point on path\n')
                 temppt_reached = 1;
             else
-                fprintf('\t Adjusting, %3.2f deg', ang_reach);
+                fprintf('\t Adjusting, %3.2f deg\n', ang_reach);
             end
             
             % ** 3.4 - Draw situation plot
+            data_plot.map_avoid = map_avoid;
             data_plot.ang_reach = ang_reach;
             data_plot.region_robot = region_robot;
             data_plot.path_cgt = path_cgt;

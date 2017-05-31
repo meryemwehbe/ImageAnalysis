@@ -3,6 +3,7 @@ function [st_arena] = draw_robot( st_arena, back, data_plot)
 %   Detailed explanation goes here
 
 figure(st_arena.f);
+subplot(1,2,1)
 
 % Supress old center
 if ~isempty(st_arena.background)
@@ -54,6 +55,22 @@ if isfield(data_plot, 'path_cgt') && ~isempty(data_plot.path_cgt)
     end
     st_arena.path_cgt = plot(path_cgt(:,1), path_cgt(:,2), '--*r', 'LineWidth', 2); hold on;
 end
+
+subplot(1,2,2)
+
+% Supress old center
+if ~isempty(st_arena.map_avoid) && isfield(data_plot, 'map_avoid')
+    st_arena.map_avoid.CData = data_plot.map_avoid;
+end
+
+if isfield(data_plot, 'path_cgt') && ~isempty(data_plot.path_cgt)
+    path_cgt = data_plot.path_cgt;
+    if ~isempty(st_arena.path_cgt_avoid)
+        delete(st_arena.path_cgt_avoid);
+    end
+    st_arena.path_cgt_avoid = plot(path_cgt(:,1), path_cgt(:,2), '--*r', 'LineWidth', 2); hold on;
+end
+
 
 end
 
