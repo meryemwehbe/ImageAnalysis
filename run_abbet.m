@@ -50,7 +50,7 @@ r = init_arena_draw( pic, region_robot, homes, regular, homeless, avoid_map);
 
 % Go to all shapes in deined order
 for action_id = 1:size(ordered_dest, 1)
-     ru% 
+    
     fprintf('Progress game %i/%i\n', action_id, size(ordered_dest, 1))
     % Starts go to object point
     endpt_reached = 0;
@@ -105,7 +105,7 @@ for action_id = 1:size(ordered_dest, 1)
         % ** 2.2 If it is last point, double check precision otherwise
         % continue and recalculate shortest path
         if size(path_cgt, 1) == 2
-            fprintf('Check if close enought to final point\n');
+            fprintf('\t Check if close enought to final point\n');
             % Get new image and fit robot
             % pic = im2double(imread(sprintf('img%i.png', i)));
             % pic = im2double(getsnapshot(vid));
@@ -123,7 +123,7 @@ for action_id = 1:size(ordered_dest, 1)
                     pause(3)
                 end
                 beep(ev3) % Beep to signal reaching point
-                fprintf('Reached beeping ...\n');
+                fprintf('\t Reached beeping ...\n');
             else
                 fprintf('\t Too far %3.3f\n', dist_point_cgt);
             end
