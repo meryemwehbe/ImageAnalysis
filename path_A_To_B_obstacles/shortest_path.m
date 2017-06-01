@@ -47,12 +47,13 @@ try
 %         ids_start = ids_start(1);
 %     end
 %     path = path(ids_start:end, :);
+
     path_real = dpsimplify(path,1);
     path_real(1, :) = point_start;
     path_real(end, :) = point_stop;
 
 catch
-    fprintf(2,'\t Unexpected spath fail\n');
+    fprintf(2,'\t Error spath fail, use default\n');
     path_real = [[point_start(1), point_start(2)]; [point_stop(1), point_stop(2)]];
 end
 

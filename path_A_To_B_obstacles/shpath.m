@@ -188,12 +188,13 @@ end
 % reached the end?
 
 if H(rf,cf) == 0
-    warning('No unobstructed route exists.')
-    varargout{1}=NaN;
-    varargout{2}=NaN;
-    if nargout>2
-        varargout{3}=NaN;
-    end
+    fprintf(2,'\t No unobstructed route exists.\n');
+%     warning('No unobstructed route exists.')
+%     varargout{1}=NaN;
+%     varargout{2}=NaN;
+%     if nargout>2
+%         varargout{3}=NaN;
+%     end
     return
 end
 
@@ -283,7 +284,8 @@ while continflag
     iter=iter+1;
     if iter>50000
         continflag=0;
-        warning('Max iterations exceeded.')
+        % warning('Max iterations exceeded.')
+        fprintf(2,'\t Max iterations exceeded.\n');
     end
     rold = r;
     cold = c;
