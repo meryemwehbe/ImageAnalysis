@@ -19,7 +19,6 @@ rotation_angle = -(angle - angle_robot);
 
 % turn the robot to degree difference is needed and go forward
 rotation_angle = mod(rotation_angle, 360);
-rotation_angle
 
 if is_last
     max_length = cfg.max_dist_err_endpt;
