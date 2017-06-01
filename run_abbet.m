@@ -50,7 +50,7 @@ r = init_arena_draw( pic, region_robot, homes, regular, homeless, avoid_map);
 
 % Go to all shapes in deined order
 for action_id = 1:size(ordered_dest, 1)
-    
+     ru% 
     fprintf('Progress game %i/%i\n', action_id, size(ordered_dest, 1))
     % Starts go to object point
     endpt_reached = 0;
@@ -134,7 +134,12 @@ for action_id = 1:size(ordered_dest, 1)
     
 end
 
-%%
+% Signal ends
+pause(0.5); beep(ev3);
+pause(0.5); beep(ev3);
+pause(0.5); beep(ev3);
+
+%% Stop camera stream
 stop(vid);
 clear vid;
     
