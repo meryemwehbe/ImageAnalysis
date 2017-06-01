@@ -24,7 +24,7 @@ config.size_min_thresh = 1e-3;              % Minimum size objects
 config.size_max_thresh = 1e-1;              % Maximum size objects
 config.compacity_thresh = 30;               % Compacity threshold, bad shape
 config.cmp_arrow_thresh = 57;               % Wanted compacity
-config.ecc_arrow_thresh = 0.77;             % Wanted compacity
+config.ecc_arrow_thresh = 0.77;             % Wanted eccentricity
 config.cmp_arrow_max_dist = 10;             % Max distancearoud thresh
 config.prop_shape_thresh = 0.5;             % Minimal probaility of shape
 % 0.2 - Robot detection

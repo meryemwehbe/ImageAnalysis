@@ -15,7 +15,7 @@ ids = find(image == 1);
 [X,Y] = ind2sub(size(image), ids);
 
 % 1. Fit circle
-[~, radius] = minboundcircle(X,Y);
+[center, radius] = minboundcircle(X,Y);
 r_circle_est = pi*radius.^2; % Get Area
 % 2. Fit triangle
 [trix, triy] = minboundtri(X,Y);
@@ -38,5 +38,16 @@ end
 p_bb = area_gt*1./([r_circle_est, r_squ_est, r_tri_est]);
 p = p_bb;
 
+% %%
+% imdisp = zeros(200, 200);
+% imdisp(70+(1:size(region.Image, 1)), 70+(1:size(region.Image, 2))) = region.Image;
+% figure();
+% subplot(1,3,1); imshow(imdisp); hold on; title(sprintf('ratio: %1.3f', p_bb(2)))
+% plot(70+rectx, 70+recty, '--b', 'LineWidth', 2); hold on;
+% subplot(1,3,2); imshow(imdisp); hold on; title(sprintf('ratio: %1.3f', p_bb(3)))
+% plot(70+trix, 70+triy, '--r', 'LineWidth', 2); hold on;
+% subplot(1,3,3); imshow(imdisp); hold on; title(sprintf('ratio: %1.3f', p_bb(1)))
+% circle = [center(1) + radius*cos(0:0.01:2*pi); center(2) + radius*sin(0:0.01:2*pi)];
+% plot(70+circle(1,:), 70+circle(2,:), '--g', 'LineWidth', 2); hold on;
 end
 

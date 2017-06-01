@@ -18,6 +18,20 @@ region_rob = regionprops(thresh, 'Perimeter', 'FilledArea', 'Image', ...
 
 prob_all = [];
 
+% figure()
+% plot(0.78, 57, 'ro'); hold on;
+% for i = 1:18
+%     region_robot = robot_fit(im2double(imread(sprintf('img%i.png', i))), config);
+% end
+% grid on; plot(0.78, 57, 'ro', 'MarkerFaceColor', 'r'); hold on;
+% legend('cgt', 'candidates', 'Location', 'NorthWest')
+
+% 
+% for i = length(region_rob):-1:1
+%     region_rob(i).Compacity = region_rob(i).Perimeter^2/region_rob(i).FilledArea ;
+%     plot(region_rob(i).Eccentricity, region_rob(i).Compacity, 'xb'); hold on;
+% end
+
 for i = length(region_rob):-1:1
     % Check if area and ratio in correct range
     if region_rob(i).FilledArea/size_image < config.size_min_thresh ...
